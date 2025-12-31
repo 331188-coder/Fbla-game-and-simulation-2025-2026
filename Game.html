@@ -66,7 +66,7 @@
             </div>
 
             <div id="plt-ui" class="hidden">
-                <div class="stat-box" style="color:var(--plt)">Mode: High Altitude</div>
+                <div class="stat-box" style="color:var(--plt)">the Sky's the Limit.</div>
             </div>
 
             <button style="background:#333; color:white; margin-top:20px" onclick="location.reload()">ABORT MISSION</button>
@@ -75,7 +75,7 @@
 </div>
 
 <div id="insight-section">
-    <h3 style="margin-top:0">STEM Mindset Insight</h3>
+    <h3 style="margin-top:0"> Mindset Insight</h3>
     <p id="mindset-text" class="insight-text">Select a career to reveal how these professionals approach problem-solving.</p>
 </div>
 
@@ -115,14 +115,17 @@
     let role = '';
     let money = 200;
     let isMoving = false;
-
     const insights = {
-        'SE': 'Software Engineers view problems as a sequence of logical states. By pre-programming the path, you are simulating how <span class="accent-text">Algorithms</span> must be perfect before execution.',
-        'SCI': 'Scientists operate on <span class="accent-text">Empirical Observation</span>. They use iterative testing and data markers (circular trail) to turn chaos into a mapped reality.',
-        'ENG': 'Engineers analyze the <span class="accent-text">Physics of Systems</span>. By using inertia, you calculate momentum. Actions have kinetic consequences.',
-        'BIZ': 'Business Managers focus on <span class="accent-text">Resource Optimization</span>. They solve problems by calculating the "Return on Investment" of a detour.',
-        'PLT': 'Pilots represent <span class="accent-text">Efficiency and Perspective</span>. By rising above constraints, they demonstrate bypass techniques using specialized tech.'
-    };
+    'SE': `Software Engineers operate through <b>Abstraction and Automation</b>. In the real world, they don’t manually guide data; they write scripts that execute a sequence once "pushed" to production. They think this way because manual intervention is inefficient—the goal is to create a perfect logic-loop that solves the problem independently, where any error in the initial "code" (your commands) results in a system crash.`,
+    
+    'SCI': `Scientists use <b>Iterative Discovery</b>. In field research, environments are often "black boxes" where you cannot see the finish line from the start. They leave "data markers" (your circular trail) to create a reproducible map of the environment. They think this way because progress is made by documenting failures and successes; if they get lost, the data trail ensures they never repeat the same mistake twice.`,
+    
+    'ENG': `Engineers manage <b>Structural Dynamics</b>. They realize that objects in the physical world have inertia—a train or a heavy gear doesn’t stop the moment you stop pushing it. They use walls as "mechanical brakes" to redirect force. They think this way because engineering is the art of using physics to your advantage, turning a lack of friction into a high-speed transit system by calculating impact points.`,
+    
+    'BIZ': `Business Managers focus on <b>Operational Sustainability</b>. A project isn’t just about moving; it’s about "burn rate." Every move costs money in labor and electricity. They think this way because they must ensure the "Revenue" (the coins) exceeds the "Overhead" (cost per move). In the real world, the shortest path isn’t always the best if you run out of capital before you arrive.`,
+    
+    'PLT': `Pilots utilize <b>Airspace Superiority</b>. While cars and trains are restricted by 2D "walls" (roads and tracks), a plane uses the Z-axis to fly <b>over</b> terrestrial obstacles. They go from Point A to B in a straight line because they operate in a medium where land-based barriers don't exist. They think this way because technology allows them to bypass traditional constraints, turning a complex ground-maze into a simple flight path.`
+};
 
     function setup(type) {
         role = type;
