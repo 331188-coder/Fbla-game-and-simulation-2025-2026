@@ -2,24 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>MazeMind: Elite STEM Edition</title>
+    <title>MazeMind</title>
     <style>
+         /* color */
         :root { --se: #00ff41; --sci: #a29bfe; --eng: #00d2ff; --biz: #f1c40f; --plt: #ffffff; }
         body { font-family: 'Segoe UI', sans-serif; background: #0a0a0c; color: white; display: flex; flex-direction: column; align-items: center; margin: 0; padding: 15px; }
         
         h1 { letter-spacing: 4px; margin-bottom: 10px; }
-        .container { display: flex; gap: 25px; background: #151518; padding: 25px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
+        /* main game container */
+     .container { display: flex; gap: 25px; background: #151518; padding: 25px; border-radius: 16px; border: 1px solid #333; box-shadow: 0 10px 40px rgba(0,0,0,0.6); }
         canvas { background: #000; border: 2px solid #444; border-radius: 6px; }
-        
+         /* right side panel */
         .ui-panel { width: 320px; display: flex; flex-direction: column; gap: 15px; }
         .card { padding: 20px; border-radius: 10px; background: #1e1e24; border-left: 6px solid #444; }
-        
+        /* different themes */
         .theme-se { border-color: var(--se); }
         .theme-sci { border-color: var(--sci); }
         .theme-eng { border-color: var(--eng); }
         .theme-biz { border-color: var(--biz); }
         .theme-plt { border-color: var(--plt); }
-
+       
+        /* fake terminal */
         #terminal { background: #000; color: var(--se); border: 1px solid var(--se); padding: 10px; font-family: monospace; width: 100%; box-sizing: border-box; border-radius: 4px; }
         button { cursor: pointer; padding: 12px; font-weight: bold; border: none; border-radius: 6px; transition: 0.2s; width: 100%; margin-bottom: 8px; font-size: 12px; }
         button:hover { filter: brightness(1.2); }
@@ -33,15 +36,14 @@
     </style>
 </head>
 <body>
-
 <h1>MAZE<span id="title-accent" style="color:#666">MIND</span></h1>
-
 <div class="container">
+    <!-- maze drawing -->
     <canvas id="gameCanvas" width="600" height="600"></canvas>
 
     <div class="ui-panel">
         <div id="career-select">
-            <h3 style="margin-top:0">Select Professional Path:</h3>
+        <h3 style="margin-top:0">Select Professional Path:</h3>
             <button style="background:var(--se); color:black" onclick="setup('SE')">SOFTWARE ENGINEER</button>
             <button style="background:var(--sci); color:black" onclick="setup('SCI')">FIELD SCIENTIST</button>
             <button style="background:var(--eng); color:black" onclick="setup('ENG')">ENGINEER</button>
@@ -60,31 +62,29 @@
             <div id="biz-ui" class="hidden">
                 <div class="stat-box" style="color:var(--biz)">Capital: <span id="money">$200</span></div>
             </div>
-
             <div id="eng-ui" class="hidden">
                 <div class="stat-box" style="color:var(--eng)">Status: In Motion</div>
             </div>
-
             <div id="plt-ui" class="hidden">
                 <div class="stat-box" style="color:var(--plt)">the Sky's the Limit.</div>
             </div>
-
-            <button style="background:#333; color:white; margin-top:20px" onclick="location.reload()">ABORT MISSION</button>
+                <button style="background:#333; color:white; margin-top:20px" onclick="location.reload()">ABORT MISSION</button>
         </div>
     </div>
 </div>
-
 <div id="insight-section">
     <h3 style="margin-top:0"> Mindset Insight</h3>
     <p id="mindset-text" class="insight-text">Select a career to reveal how these professionals approach problem-solving.</p>
 </div>
-
 <script>
+    // canvas
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+   //grid size
     const grid = 20;
     const res = canvas.width / grid;
 
+    //map
     const maze = [
         [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1],
         [0,0,0,0,1,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1],
@@ -115,18 +115,17 @@
     let role = '';
     let money = 200;
     let isMoving = false;
+    //info box
     const insights = {
     'SE': `Software Engineers operate through <b>Abstraction and Automation</b>. In the real world, they don’t manually guide data; they write scripts that execute a sequence once "pushed" to production. They think this way because manual intervention is inefficient—the goal is to create a perfect logic-loop that solves the problem independently, where any error in the initial "code" (your commands) results in a system crash.`,
-    
     'SCI': `Scientists use <b>Iterative Discovery</b>. In field research, environments are often "black boxes" where you cannot see the finish line from the start. They leave "data markers" (your circular trail) to create a reproducible map of the environment. They think this way because progress is made by documenting failures and successes; if they get lost, the data trail ensures they never repeat the same mistake twice.`,
-    
     'ENG': `Engineers manage <b>Structural Dynamics</b>. They realize that objects in the physical world have inertia—a train or a heavy gear doesn’t stop the moment you stop pushing it. They use walls as "mechanical brakes" to redirect force. They think this way because engineering is the art of using physics to your advantage, turning a lack of friction into a high-speed transit system by calculating impact points.`,
-    
     'BIZ': `Business Managers focus on <b>Operational Sustainability</b>. A project isn’t just about moving; it’s about "burn rate." Every move costs money in labor and electricity. They think this way because they must ensure the "Revenue" (the coins) exceeds the "Overhead" (cost per move). In the real world, the shortest path isn’t always the best if you run out of capital before you arrive.`,
-    
     'PLT': `Pilots utilize <b>Airspace Superiority</b>. While cars and trains are restricted by 2D "walls" (roads and tracks), a plane uses the Z-axis to fly <b>over</b> terrestrial obstacles. They go from Point A to B in a straight line because they operate in a medium where land-based barriers don't exist. They think this way because technology allows them to bypass traditional constraints, turning a complex ground-maze into a simple flight path.`
 };
 
+    
+         // role choser
     function setup(type) {
         role = type;
         document.getElementById('career-select').classList.add('hidden');
@@ -135,7 +134,6 @@
         document.getElementById('title-accent').style.color = 'var(--' + type.toLowerCase() + ')';
         document.getElementById('active-role').innerText = (type === 'ENG' ? 'Engineer' : (type === 'SE' ? 'Software Engineer' : (type === 'SCI' ? 'Field Scientist' : (type === 'PLT' ? 'Pilot' : 'Business Manager'))));
         document.getElementById('mindset-text').innerHTML = insights[type];
-        
         document.getElementById('se-ui').classList.toggle('hidden', type !== 'SE');
         document.getElementById('biz-ui').classList.toggle('hidden', type !== 'BIZ');
         document.getElementById('eng-ui').classList.toggle('hidden', type !== 'ENG');
@@ -143,7 +141,7 @@
         
         draw();
     }
-
+//keybinds
     window.addEventListener('keydown', e => {
         if(role === '' || role === 'SE' || isMoving) return;
         let dx = 0, dy = 0;
@@ -151,18 +149,19 @@
         if(e.key === 'ArrowDown') { dy = 1; player.angle = Math.PI/2; }
         if(e.key === 'ArrowLeft') { dx = -1; player.angle = Math.PI; }
         if(e.key === 'ArrowRight') { dx = 1; player.angle = 0; }
-
+        //engineer movemt
         if(dx !== 0 || dy !== 0) {
             if(role === 'ENG') slide(dx, dy);
             else move(dx, dy);
         }
     });
-
+    //movment
     function move(dx, dy) {
         let nx = player.x + dx;
         let ny = player.y + dy;
         let canMove = (role === 'PLT') || (nx >= 0 && nx < grid && ny >= 0 && ny < grid && maze[ny][nx] === 0);
 
+        
         if(nx >= 0 && nx < grid && ny >= 0 && ny < grid && canMove) {
             player.x = nx;
             player.y = ny;
@@ -183,13 +182,14 @@
         return false;
     }
 
+    
     function slide(dx, dy) {
         isMoving = true;
         let interval = setInterval(() => {
             if(!move(dx, dy)) { clearInterval(interval); isMoving = false; }
         }, 50);
     }
-
+    //cp terminal
     function executeSE() {
         let cmds = document.getElementById('terminal').value.toUpperCase().split(/[\s,]+/);
         let i = 0;
@@ -200,7 +200,7 @@
             else if(c === 'L') move(-1, 0); else if(c === 'R') move(1, 0);
             i++;
         }, 250);
-    }
+     }
 
     function checkWin() {
         if(player.x === goal.x && player.y === goal.y) {
@@ -208,6 +208,8 @@
         }
     }
 
+
+    //draw tool
     function draw() {
         ctx.clearRect(0,0,600,600);
         for(let y=0; y<grid; y++) {
@@ -222,7 +224,7 @@
                     ctx.strokeStyle = '#333'; ctx.strokeRect(x*res, y*res, res, res);
                 }
                 if(x === goal.x && y === goal.y) { ctx.fillStyle = '#ff4757'; ctx.fillRect(x*res, y*res, res, res); }
-            }
+         }
         }
 
         if(role === 'BIZ') {
@@ -231,30 +233,33 @@
             });
         }
 
+        //pacman trail
         if(role === 'SCI') {
             history.forEach(h => {
                 ctx.fillStyle = 'rgba(162, 155, 254, 0.4)'; ctx.beginPath();
-                ctx.arc(h.x*res+res/2, h.y*res+res/2, res/5, 0, Math.PI*2); ctx.fill();
-            });
+                ctx.arc(h.x*res+res/2, h.y*res+res/2, res/5, 0, Math.PI*2); ctx.fill();//circle placement
+            } );
         }
-
+            //player drawing
         ctx.save();
         ctx.translate(player.x*res+res/2, player.y*res+res/2);
         ctx.rotate(player.angle);
         ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--'+role.toLowerCase()).trim();
         ctx.shadowBlur = 15; ctx.shadowColor = ctx.fillStyle;
-
+        //pilot plane
         if(role === 'PLT') {
             ctx.beginPath();
             ctx.moveTo(10, 0); ctx.lineTo(-10, -8); ctx.lineTo(-10, 8);
             ctx.closePath(); ctx.fill();
-        } else {
+        } else 
+        {
             ctx.beginPath(); ctx.arc(0, 0, res/3, 0, Math.PI*2); ctx.fill();
         }
         ctx.restore();
-    }
+        }
 
     draw();
+    
 </script>
 </body>
 </html>
