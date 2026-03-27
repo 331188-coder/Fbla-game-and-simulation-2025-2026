@@ -234,7 +234,7 @@ body {
     <h1>MAZE<span style="color:#00ff41">MIND</span></h1>
     <p>Navigate complex mazes through the lens of different careers</p>
     <button class="title-btn" onclick="showLevelSelect()">START GAME</button>
-    <button class="title-btn" onclick="alert('Use arrow keys to move. ESC to go back. Complete levels fast for 3 stars!')">INSTRUCTIONS</button>
+    <button class="title-btn" onclick="alert('WELCOME TO MAZEMIND\n\n• THE GOAL: Reach the red flashing exit as fast as possible.\n\n• CAREER PATHS: Each role changes how you move. Engineers slide until they hit walls, Scientists work in the dark, and Business Managers must collect coins to stay solvent.\n\n• CONTROLS: Use Arrow Keys to move. (Software Engineers must type U, D, L, R commands into the terminal).\n\n• SCORING: Earn up to 3 stars by thinking like a professional and moving efficiently!')" </button>
 </div>
 <div class="snow-container">
     <div class="snow layer1"></div>
@@ -350,11 +350,15 @@ let STATE = {
 };
 
 const insights = {
-    'SE': `Software Engineers operate through <b>Abstraction and Automation</b>.`,
-    'SCI': `Scientists use <b>Iterative Discovery</b>.`,
-    'ENG': `Engineers manage <b>Structural Dynamics</b>.`,
-    'BIZ': `Business Managers focus on <b>Operational Sustainability</b>.`,
-    'PLT': `Pilots utilize <b>Airspace Superiority</b>.`
+    'SE': `<strong>The Architect’s Approach:</strong> Software Engineers don't just solve a problem once; they build a system to solve it forever. By "Programming" your path, you are practicing <strong>algorithmic thinking</strong>—breaking a complex journey into repeatable, logical instructions.`,
+    
+    'SCI': `<strong>The Researcher’s Approach:</strong> Scientists embrace the unknown. Since your vision is limited, you must rely on <strong>empirical data</strong>. Every step you take leaves a trail, turning "failure" (hitting a wall) into valuable information for your next hypothesis.`,
+    
+    'ENG': `<strong>The Systems Approach:</strong> Engineers deal with <strong>momentum and constraints</strong>. You don't just move; you manage a process in motion. This "sliding" mechanic reflects how real-world systems have inertia—once you start a project, you must guide it until it reaches a natural stopping point.`,
+    
+    'BIZ': `<strong>The Manager’s Approach:</strong> Business is a game of <strong>resource allocation</strong>. Every move has a "burn rate" (cost). To survive, you must balance your core objective with "revenue" (coins), proving that the most direct path isn't always the most sustainable one.`,
+    
+    'PLT': `<strong>The Navigator’s Approach:</strong> Pilots operate with <strong>spatial freedom</strong>. While others see walls as obstacles, you see the bigger picture. This path teaches you to move beyond traditional boundaries, though the challenge lies in maintaining precision while moving at high speeds.`
 };
 
 function showLevelSelect() {
@@ -543,9 +547,22 @@ function draw() {
             }
             
             if (x === STATE.goal.x && y === STATE.goal.y) {
-                ctx.fillStyle = '#ff4757';
-                ctx.fillRect(x*res, y*res, res, res);
-            }
+    const pulse = (Math.sin(Date.now() / 200) + 1) / 2;
+    ctx.fillStyle = `rgba(255, 71, 87, ${0.4 + pulse * 0.6})`;
+    ctx.shadowBlur = 20 * pulse;
+    ctx.shadowColor = '#ff4757';
+    
+    // Draw outer pulsing glow
+    ctx.fillRect(x * res + 2, y * res + 2, res - 4, res - 4);
+    
+    // Draw steady inner core
+    ctx.fillStyle = 'white';
+    ctx.globalAlpha = 0.8;
+    ctx.fillRect(x * res + res/2 - 3, y * res + res/2 - 3, 6, 6);
+    ctx.globalAlpha = 1.0;
+    ctx.shadowBlur = 0;
+}
+            
         }
     }
     
@@ -639,6 +656,13 @@ if (x === STATE.goal.x && y === STATE.goal.y) {
     ctx.fillRect(x*res + res/2 - 2, y*res + res/2 - 2, 4, 4);
     ctx.shadowBlur = 0;
 }
+
+// Prevent arrow keys from scrolling the page
+window.addEventListener("keydown", function(e) {
+    if(["ArrowUp","ArrowDown","ArrowLeft","ArrowRight"].indexOf(e.code) > -1) {
+        e.preventDefault();
+    }
+}, false);
 
 </script>
 </body>
