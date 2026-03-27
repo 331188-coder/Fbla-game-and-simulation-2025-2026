@@ -1,4 +1,5 @@
 MazeMind
+
 MazeMind is a web-based puzzle simulation developed for the 2025-2026 FBLA Computer Game & Simulation Programming competition. The project focuses on creating an engaging user experience through logic-based navigation that simulates a certain career and smooth browser-based performance.
 
 Project Vision
